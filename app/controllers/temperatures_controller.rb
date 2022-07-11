@@ -5,7 +5,7 @@ class TemperaturesController < ApplicationController
     # - would probably rename this route - as it creates more than 1 record;
     # and it could be a bit mis-leading
 
-    # - fake validting record is created
+    # - fake validating record(s) are created
     # - also, this logic would be moved into a model
     prev_db_count = redis.lrange(REDIS_LIST_KEY, 0, -1).count
     temperatures_param.each do |temperature_obj|
@@ -14,6 +14,7 @@ class TemperaturesController < ApplicationController
     end
 
     if sync_success?(prev_db_count, temperatures_param.count)
+      puts redis.lrange(REDIS_LIST_KEY, 0, -1)
       render json: { message: 'temperature_received' }, status: 201
       # could add logic here to deal with bad data - or data that was unable to be inserted
       # pretending all data valid
@@ -57,7 +58,9 @@ class TemperaturesController < ApplicationController
     str[/#{string_begin}(.*?)#{string_end}/m, 1].to_datetime
   end
 
+  # hack get temperature - since using string values from redis and not standard DB
   def parsed_temp(str)
+    return 0 if str.blank?
     string_begin = "\"temperature\"=>"
     string_end = ","
     str[/#{string_begin}(.*?)#{string_end}/m, 1].to_f
