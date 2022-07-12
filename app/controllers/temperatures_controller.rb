@@ -7,9 +7,6 @@ class TemperaturesController < ApplicationController
 
     # - fake validating record(s) are created
     # - also, this logic would be moved into a model
-    puts 'earth db'
-    puts redis.lrange(REDIS_LIST_KEY, 0, -1)
-    puts '--'
     prev_db_count = redis.lrange(REDIS_LIST_KEY, 0, -1).count
     temperatures_param.each do |temperature_obj|
       temperature_obj['temp_change'] =
@@ -20,6 +17,10 @@ class TemperaturesController < ApplicationController
     end
 
     if sync_success?(prev_db_count, temperatures_param.count)
+      # puts "-------------------------------------------"
+      # puts "redis synced space temperatures to earth"
+      # puts redis.lrange(REDIS_LIST_KEY, 0, -1)
+      # puts "-------------------------------------------"
       render json: { message: 'temperature_received' }, status: 201
       # could add logic here to deal with bad data - or data that was unable to be inserted
       # pretending all data valid
