@@ -1,5 +1,5 @@
 
-# Project Title
+# Earth App
 
 A on-earth broker / consumer responsible for receiving and storing temperature data from space.
 
