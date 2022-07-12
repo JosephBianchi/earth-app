@@ -1,10 +1,13 @@
 
 # Project Title
 
-A brief description of what this project does and who it's for
+A on-earth broker / consumer responsible for receiving and storing temperature data from space.
 
+DB records should include temperature data with the following properties:
 
-
+* temperature (celsius)
+* change in temperature from last temperature
+* timestamp
 
 ## Ruby Version
 3.0.0
